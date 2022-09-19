@@ -31,8 +31,10 @@ str(sp_design)
 sp_design_labelled <- sp_design %>%
   mutate(across(.fns = as.character),
          across(matches("^traveltime_.*$"), .fns = ~ if_else(is.na(.) == TRUE, NA_character_, paste0(.," min"))),
-         across(matches("^price_.*$"), .fns = ~ if_else(is.na(.) == TRUE, NA_character_, paste0(.," CHF"))),
+         across(matches("^cost_.*$"), .fns = ~ if_else(is.na(.) == TRUE, NA_character_, paste0(.," CHF"))),
          across(.fns = ~ replace_na(., "")))
+
+str(sp_design_labelled)
 
 # create cards (a picture for each choice situation) ----------------------
 
@@ -43,20 +45,17 @@ sp_cards <- sp_design_labelled %>%
 
 # create json files for each block ----------------------------------------
 
-sp_design_json <- sp_design_labelled %>% generate_jsondata()
+sp_design_jsons <- sp_design_labelled %>%
+  generate_jsondata() %>%
+  group_by(block_name)
+sp_design_jsons_groupkeys <- group_keys(sp_design_jsons) %>% pull(block_name)
 
-sp_data_jsons <- sp_data_labelled %>%
-  select(ResponseId, cs = choice_id) %>%
-  bind_cols(sp_data_json) %>%
-  group_by(ResponseId)
-sp_data_jsons_groupkeys <- group_keys(sp_data_jsons) %>% pull(ResponseId)
-
-sp_data_jsons <- sp_data_jsons %>%
+sp_design_jsons <- sp_design_jsons %>%
   group_split()
-names(sp_data_jsons) <- sp_data_jsons_groupkeys
+names(sp_design_jsons) <- sp_design_jsons_groupkeys
 
-sp_data_jsons %>%
-  walk2(names(.), ~ write_json(.x, here::here(paste0("data/jsons_batch",batchnr), paste0(.y,".json"))))
+sp_design_jsons %>%
+  walk2(names(.), ~ write_json(.x, file.path(getwd(), "data/jsons", paste0(.y,".json"))))
 
 
 

@@ -1,0 +1,13 @@
+name,option_1,option_2,option_3,option_4
+block_1_cs_1,Walk,Car,PT,Bicycle
+block_1_cs_2,Walk,Car,PT,Bicycle
+block_1_cs_3,Bicycle,Car,Walk,PT
+block_1_cs_4,Walk,PT,Bicycle,Car
+block_2_cs_1,Bicycle,PT,Walk,Car
+block_2_cs_2,Car,Walk,PT,Bicycle
+block_2_cs_3,Walk,Bicycle,PT,Car
+block_2_cs_4,Bicycle,PT,Car,Walk
+block_3_cs_1,PT,Car,Walk,Bicycle
+block_3_cs_2,Car,Bicycle,PT,Walk
+block_3_cs_3,Bicycle,Car,PT,Walk
+block_3_cs_4,PT,Bicycle,Car,Walk

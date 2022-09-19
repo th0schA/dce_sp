@@ -5,7 +5,7 @@
 generate_cards <- function(choice_design) {
   
   alternatives <- c("walk","bicycle","car","pt")
-  alternatives_labels <- c("Walk","Bicycle","Auto","PT")
+  alternatives_labels <- c("Walk","Bicycle","Car","PT")
   eg <- expand.grid(c("cost","traveltime"), alternatives)
   alt_attr <- sprintf('%s_%s', eg[,1], eg[,2])
   alt_attr_new <- alt_attr[!alt_attr %in% colnames(choice_design)]
@@ -216,7 +216,7 @@ theme_example <- function(nr_alts, nr_attr) {
 generate_jsondata <- function(choice_design) {
   
   alternatives <- c("walk","bicycle","car","pt")
-  alternatives_labels <- c("Walk","Bicycle","Auto","PT")
+  alternatives_labels <- c("Walk","Bicycle","Car","PT")
   eg <- expand.grid(c("cost","traveltime"), alternatives)
   alt_attr <- sprintf('%s_%s', eg[,1], eg[,2])
   alt_attr_new <- alt_attr[!alt_attr %in% colnames(choice_design)]
@@ -228,7 +228,8 @@ generate_jsondata <- function(choice_design) {
       slice(rep(1:n(), each = nrow(choice_design))) %>%
       mutate(across(.fns = ~ replace_na(., ""))))
   
-  jsondata <- choice_design[, alt_attr]
+  jsondata <- choice_design[, c("block", "cs", alt_attr)]
+  jsondata$block_name <- paste0("block_",jsondata$block)
   return(jsondata)
 }
 
