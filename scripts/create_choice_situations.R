@@ -17,26 +17,28 @@ lapply(required_packages, require, character.only = TRUE)
 
 # load sp design ----------------------------------------------------------
 
-sp_design <- read_csv(file = file.path(getwd(),"data","sp_design.csv")) %>%
-  rename(cs_design = cs) %>%
-  arrange(block, cs_design) %>% 
-  group_by(block) %>%
-  mutate(cs = row_number()) %>%
-  ungroup()
+sp_design <- readr::read_csv(file = file.path(getwd(),"data","sp_design.csv")) %>%
+  dplyr::rename(cs_design = cs) %>%
+  dplyr::arrange(block, cs_design) %>% 
+  dplyr::group_by(block) %>%
+  dplyr::mutate(cs = row_number()) %>%
+  dplyr::ungroup()
 
 str(sp_design)
 
 # create labelled sp design -----------------------------------------------
 
 sp_design_labelled <- sp_design %>%
-  mutate(across(.fns = as.character),
-         across(matches("^traveltime_.*$"), .fns = ~ if_else(is.na(.) == TRUE, NA_character_, paste0(.," min"))),
-         across(matches("^cost_.*$"), .fns = ~ if_else(is.na(.) == TRUE, NA_character_, paste0(.," CHF"))),
-         across(.fns = ~ replace_na(., "")))
+  dplyr::mutate(dplyr::across(.fns = as.character),
+                dplyr::across(matches("^traveltime_.*$"), .fns = ~ dplyr::if_else(is.na(.) == TRUE, NA_character_, paste0(.," min"))),
+                dplyr::across(matches("^cost_.*$"), .fns = ~ dplyr::if_else(is.na(.) == TRUE, NA_character_, paste0(.," CHF"))),
+                dplyr::across(.fns = ~ tidyr::replace_na(., "")))
 
 str(sp_design_labelled)
 
 # create cards (a picture for each choice situation) ----------------------
+
+source(file.path(getwd(),"scripts","helper_functions.R"))
 
 sp_cards <- sp_design_labelled %>%
   generate_cards() %>%
@@ -47,15 +49,15 @@ sp_cards <- sp_design_labelled %>%
 
 sp_design_jsons <- sp_design_labelled %>%
   generate_jsondata() %>%
-  group_by(block_name)
-sp_design_jsons_groupkeys <- group_keys(sp_design_jsons) %>% pull(block_name)
+  dplyr::group_by(block_name)
+sp_design_jsons_groupkeys <- dplyr::group_keys(sp_design_jsons) %>% dplyr::pull(block_name)
 
 sp_design_jsons <- sp_design_jsons %>%
-  group_split()
+  dplyr::group_split()
 names(sp_design_jsons) <- sp_design_jsons_groupkeys
 
 sp_design_jsons %>%
-  walk2(names(.), ~ write_json(.x, file.path(getwd(), "data/jsons", paste0(.y,".json"))))
+  purrr::walk2(names(.), ~ jsonlite::write_json(.x, file.path(getwd(), "data/jsons", paste0(.y,".json"))))
 
 
 

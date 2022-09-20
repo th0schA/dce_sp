@@ -11,13 +11,13 @@ generate_cards <- function(choice_design) {
   alt_attr_new <- alt_attr[!alt_attr %in% colnames(choice_design)]
   alt_attr_new <- setNames(rep(NA_character_, length(alt_attr_new)), alt_attr_new)
   
-  choice_design <- bind_cols(
+  choice_design <- dplyr::bind_cols(
     choice_design,
-    bind_rows(alt_attr_new) %>%
-      slice(rep(1:n(), each = nrow(choice_design))) %>%
-      mutate(across(.fns = ~ replace_na(., ""))))
+    dplyr::bind_rows(alt_attr_new) %>%
+      dplyr::slice(rep(1:n(), each = nrow(choice_design))) %>%
+      dplyr::mutate(dplyr::across(.fns = ~ tidyr::replace_na(., ""))))
   
-  alt_and_attr <- alt_attr %>% str_split(pattern = "_",  n = 2)
+  alt_and_attr <- alt_attr %>% stringr::str_split(pattern = "_",  n = 2)
   
   attributes <- unique(sapply(alt_and_attr, function(x) { x[[1]] }))
   attributes_labels <- c("Cost","Travel Time")
@@ -101,9 +101,9 @@ randomize_cards <- function(cards, seed = set.seed(1), file = NULL) {
   
   # write csv
   if(!is.null(file)) {
-    write_csv(order, file = file.path(getwd(),"data/cards_order", paste0(file)))
+    readr::write_csv(order, file = file.path(getwd(),"data/cards_order", paste0(file)))
     # save to global environment
-    assign(paste0(str_remove(file, ".csv")), order, envir = globalenv())
+    assign(paste0(stringr::str_remove(file, ".csv")), order, envir = globalenv())
   }
   
   cards <- sapply(randomized_cards, function(x) x$card, simplify = FALSE)
@@ -222,11 +222,11 @@ generate_jsondata <- function(choice_design) {
   alt_attr_new <- alt_attr[!alt_attr %in% colnames(choice_design)]
   alt_attr_new <- setNames(rep(NA_character_, length(alt_attr_new)), alt_attr_new)
   
-  choice_design <- bind_cols(
+  choice_design <- dplyr::bind_cols(
     choice_design,
-    bind_rows(alt_attr_new) %>%
-      slice(rep(1:n(), each = nrow(choice_design))) %>%
-      mutate(across(.fns = ~ replace_na(., ""))))
+    dplyr::bind_rows(alt_attr_new) %>%
+      dplyr::slice(rep(1:n(), each = nrow(choice_design))) %>%
+      dplyr::mutate(dplyr::across(.fns = ~ tidyr::replace_na(., ""))))
   
   jsondata <- choice_design[, c("block", "cs", alt_attr)]
   jsondata$block_name <- paste0("block_",jsondata$block)
