@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------- #
-# CREATE CHOICE SITUATIONS
+# CREATE SP CHOICE SITUATIONS
 # ------------------------------------------------------------------------------------------- #
 
 
@@ -13,6 +13,11 @@ required_packages <- c("tidyverse","lubridate","jsonlite","glue")
 new_packages <- required_packages[!(required_packages %in% installed.packages()[,"Package"])]
 if(length(new_packages)) install.packages(new_packages)
 lapply(required_packages, require, character.only = TRUE)
+
+
+# load helper functions ---------------------------------------------------
+
+source(file.path(getwd(),"scripts","helper_functions.R"))
 
 
 # load sp design ----------------------------------------------------------
@@ -37,8 +42,6 @@ sp_design_labelled <- sp_design %>%
 str(sp_design_labelled)
 
 # create cards (a picture for each choice situation) ----------------------
-
-source(file.path(getwd(),"scripts","helper_functions.R"))
 
 sp_cards <- sp_design_labelled %>%
   generate_cards() %>%
