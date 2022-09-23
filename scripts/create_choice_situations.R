@@ -9,10 +9,18 @@
 rm(list = ls())
 
 # install and load packages if needed
-required_packages <- c("tidyverse","lubridate","jsonlite","glue","aws.s3","aws.signature")
+required_packages <- c("tidyverse","lubridate","jsonlite","glue","aws.s3")
 new_packages <- required_packages[!(required_packages %in% installed.packages()[,"Package"])]
 if(length(new_packages)) install.packages(new_packages)
 lapply(required_packages, require, character.only = TRUE)
+
+# AWS S3 set up
+Sys.setenv(
+  "AWS_ACCESS_KEY_ID" = "yourkey",
+  "AWS_SECRET_ACCESS_KEY" = "yoursecretkey",
+  "AWS_DEFAULT_REGION" = "yourregion"
+)
+
 
 # load helper functions ---------------------------------------------------
 
@@ -55,7 +63,7 @@ str(sp_design_labelled)
 sp_cards <- sp_design_labelled %>%
   generate_cards() %>%
   randomize_cards(file = "sp_cards_order.csv") %>%
-  print_cards()
+  print_cards(draw = F, save = T, upload = F, bucket = "yourbucket")
 
 # create json files for each block ----------------------------------------
 

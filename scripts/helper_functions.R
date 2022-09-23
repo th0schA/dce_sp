@@ -111,7 +111,8 @@ randomize_cards <- function(cards, seed = set.seed(1), file = NULL) {
   invisible(cards)
 }
 
-print_card <- function(card, card_name, file, draw = FALSE, save = TRUE) {
+print_card <- function(card, card_name, file, file_aws,
+                       draw, save, upload, bucket) {
   
   card <- as.data.frame(card)
   cs <- stringr::str_extract(stringr::str_extract(card_name, "cs_\\d"), "\\d")
@@ -134,12 +135,27 @@ print_card <- function(card, card_name, file, draw = FALSE, save = TRUE) {
   w = grid::convertWidth(sum(c$widths), "in", TRUE)
   h = grid::convertHeight(sum(c$heights), "in", TRUE)
   
-  if(save) ggplot2::ggsave(file, c, width = w, height = h)
+  if(save) {
+    ggplot2::ggsave(file, c, width = w, height = h)
+  }
+  
+  if(upload) {
+    tmp <- tempfile(paste0("image"), fileext = ".png")
+    on.exit(unlink(tmp))
+    ggplot2::ggsave(tmp, c, width = w, height = h)
+    put_object(file = tmp,
+               object = file_aws,
+               bucket = bucket,
+               acl = "public-read")
+  }
   
   invisible(card)
 }
 
-print_cards <- function(cards, verbose = TRUE, ...) {
+print_cards <- function(cards, verbose = TRUE, draw = F, save = F, upload = F, bucket = NULL) {
+  
+  if(upload == TRUE & is.null(bucket)) stop("If you would like to upload the pictures,
+                                            define 'upload = TRUE' and 'upload = 'yourawsbucket' '")
   
   sapply(seq_along(cards), function(i) {
     
@@ -147,9 +163,9 @@ print_cards <- function(cards, verbose = TRUE, ...) {
     card <- cards[[i]]
     
     file <- file.path(getwd(),"data/cards", glue::glue("{card_name}.png"))
-    #file <- here::here(paste0("data/cards_batch",batchnr,"/", glue::glue("{card_name}.png")))
+    file_aws <- glue::glue("{card_name}.png")
     
-    print_card(card, card_name, file, ...)
+    print_card(card, card_name, file, file_aws, draw, save, upload, bucket)
     
     if(verbose) cat(card_name, "\n")
   })
