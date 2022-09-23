@@ -10,8 +10,16 @@ The output is a survey like [this](https://ivtethz.fra1.qualtrics.com/jfe/form/S
 2. R Code to display a choice situation in Qualtrics (scripts)
 3. Qualtrics survey template (survey)
 
+## Requirements
 
+### AWS
+1. In order for the example to work, an account on [Amazon Simple Storage Service (S3)](https://aws.amazon.com/s3/?tag=mochaglobal20-20) is needed. See [this page](https://aws.amazon.com/s3/pricing/) for AWS pricing. For the purpose of implementing DCEs in the proposed way, there are no to very low costs.
 
+### R
+
+### Qualtrics
+
+## Guide
 
 
 
