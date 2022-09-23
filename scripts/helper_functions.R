@@ -17,7 +17,7 @@ generate_cards <- function(choice_design) {
       dplyr::slice(rep(1:n(), each = nrow(choice_design))) %>%
       dplyr::mutate(dplyr::across(.fns = ~ tidyr::replace_na(., ""))))
   
-  alt_and_attr <- alt_attr %>% stringr::str_split(pattern = "_",  n = 2)
+  alt_and_attr <- stringr::str_split(alt_attr, pattern = "_",  n = 2)
   
   attributes <- unique(sapply(alt_and_attr, function(x) { x[[1]] }))
   attributes_labels <- c("Cost","Travel Time")

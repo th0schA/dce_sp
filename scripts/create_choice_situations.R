@@ -9,16 +9,17 @@
 rm(list = ls())
 
 # install and load packages if needed
-required_packages <- c("tidyverse","lubridate","jsonlite","glue")
+required_packages <- c("tidyverse","lubridate","jsonlite","glue","aws.s3","aws.signature")
 new_packages <- required_packages[!(required_packages %in% installed.packages()[,"Package"])]
 if(length(new_packages)) install.packages(new_packages)
 lapply(required_packages, require, character.only = TRUE)
 
-
 # load helper functions ---------------------------------------------------
 
+# functions to :
+# 1. produce pictures
+# 2. produce json files
 source(file.path(getwd(),"scripts","helper_functions.R"))
-
 
 # load sp design ----------------------------------------------------------
 
@@ -35,14 +36,22 @@ str(sp_design)
 
 sp_design_labelled <- sp_design %>%
   dplyr::mutate(dplyr::across(.fns = as.character),
-                dplyr::across(matches("^traveltime_.*$"), .fns = ~ dplyr::if_else(is.na(.) == TRUE, NA_character_, paste0(.," min"))),
-                dplyr::across(matches("^cost_.*$"), .fns = ~ dplyr::if_else(is.na(.) == TRUE, NA_character_, paste0(.," CHF"))),
+                dplyr::across(matches("^traveltime_.*$"),
+                              .fns = ~ dplyr::if_else(is.na(.) == TRUE, NA_character_, paste0(.," min"))),
+                dplyr::across(matches("^cost_.*$"),
+                              .fns = ~ dplyr::if_else(is.na(.) == TRUE, NA_character_, paste0(.," CHF"))),
                 dplyr::across(.fns = ~ tidyr::replace_na(., "")))
 
 str(sp_design_labelled)
 
 # create cards (a picture for each choice situation) ----------------------
 
+# 3 functions from file helper_functions.R:
+# 1. generate_cards(): creates a list of dfs, each element is a choice situation
+# 2. randomize_cards(): randomly changes order of alternatives in each choice situation
+#                       and saves a csv file with order for later rematching
+# 3. print_cards(): applies a theme to each df and saves it to folder and AWS
+#                   can also only print cards for inspection
 sp_cards <- sp_design_labelled %>%
   generate_cards() %>%
   randomize_cards(file = "sp_cards_order.csv") %>%
