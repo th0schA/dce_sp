@@ -12,19 +12,23 @@ The output is a survey like [this](https://ivtethz.fra1.qualtrics.com/jfe/form/S
 
 ## Requirements
 
-### AWS
+#### AWS
 
 In order for the example to work, an account on [Amazon Simple Storage Service (S3)](https://aws.amazon.com/s3/?tag=mochaglobal20-20) is needed. See [this page](https://aws.amazon.com/s3/pricing/) for AWS pricing. For the purpose of implementing DCEs in the proposed way, there are no to very low costs. This example makes use of the R package [aws.s3](https://github.com/cloudyr/aws.s3) to connect and transfer files even though the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/index.html) is recommended for transfering many files at once.
 
-### R
+#### R
 
 To run the R scripts, R ([The R Project for Statistical Computing](https://www.r-project.org/)) and the [R Studio Editor](https://www.rstudio.com/products/rstudio/download/) is needed. Both are freely available under the links provided.
 
-### Qualtrics
+#### Qualtrics
 
 Unfortunately, the example does not work with the free account of [Qualtrics](https://www.qualtrics.com/uk/core-xm/) as some specific features are needed.
 
 ## Guide
+
+1. R script
+2. Done ^^
+
 
 
 
