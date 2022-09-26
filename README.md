@@ -40,7 +40,7 @@ Unfortunately, only part of the example can be used with the free account of [Qu
 
 ## Guide
 
-1. Check that requirements from above are set up.
+1. Check that requirements from above are met.
 2. Download or clone repository.
 3. Open the R project file "dce_sp.Rproj" in R Studio Editor on your machine.
 4. Run script "create_choice_situations.R". Explanations are given in the script itself and the functions loaded from "helper_functions.R".
