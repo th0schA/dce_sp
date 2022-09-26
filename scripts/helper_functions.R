@@ -71,7 +71,7 @@ randomize_card <- function(card) {
 
 randomize_cards <- function(cards, seed = set.seed(1), file = NULL) {
   
-  if(is.null(file)) warning("The random ordering will not be preserved! Please consider providing file argument.")
+  if(is.null(file)) warning("The random ordering will not be saved! Please provide file argument.")
   
   seed
   
@@ -163,7 +163,7 @@ print_cards <- function(cards, verbose = TRUE, draw = F, save = F, upload = F, b
     card <- cards[[i]]
     
     file <- file.path(getwd(),"data/cards", glue::glue("{card_name}.png"))
-    file_aws <- glue::glue("{card_name}.png")
+    file_aws <- glue::glue("cards/{card_name}.png")
     
     print_card(card, card_name, file, file_aws, draw, save, upload, bucket)
     

@@ -26,6 +26,8 @@ In order for the example to work, an account on [Amazon Simple Storage Service (
 
 1. To use the package, you will also have to enter your credentials into R. Your keypair can be generated on the IAM Management Console under the heading Access Keys. Note that you only have access to your secret key once. After it is generated, you need to save it in a secure location. New keypairs can be generated at any time if yours has been lost, stolen, or forgotten.
 
+2. Create a bucket (any name) and two folders called "cards" and "jsons". These will be used to upload the pictures or JSON files.
+
 ### R
 
 To run the scripts, R ([The R Project for Statistical Computing](https://www.r-project.org/)) and the [R Studio Editor](https://www.rstudio.com/products/rstudio/download/) is needed. Both are freely available under the links provided. Please use the latest versions if possible.
@@ -38,9 +40,9 @@ Unfortunately, only part of the example can be used with the free account of [Qu
 
 1. Check that requirements from above are set up.
 2. Download or clone repository.
-3. Open the R project file "dce_sp.Rproj" on your machine.
+3. Open the R project file "dce_sp.Rproj" in R Studio Editor on your machine.
 4. Run script "create_choice_situations.R". Explanations are given in the script itself and the functions loaded from "helper_functions.R".
-5. Download Qualtrics template "DCE_SP.qsf" and import it to Qualtrics.
+5. Download Qualtrics template "DCE_SP_EXAMPLE.qsf" and import it to Qualtrics. Instructions are given in the template.
 
 
 

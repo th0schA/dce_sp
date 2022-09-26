@@ -57,8 +57,8 @@ str(sp_design_labelled)
 # 3 functions from file helper_functions.R:
 # 1. generate_cards(): creates a list of dfs, each element is a choice situation
 # 2. randomize_cards(): randomly changes order of alternatives in each choice situation
-#                       and saves a csv file with order for later rematching
-# 3. print_cards(): applies a theme to each df and saves it to folder and AWS
+#                       and saves a csv file with the order for later rematching
+# 3. print_cards(): applies a theme to each choice situation and draws/saves it to folder and AWS
 #                   can also only print cards for inspection
 sp_cards <- sp_design_labelled %>%
   generate_cards() %>%
