@@ -28,6 +28,8 @@ In order for the example to work, an account on [Amazon Simple Storage Service (
 
 2. Create a bucket (any name) and two folders called "cards" and "jsons". These will be used to upload the pictures or JSON files.
 
+3. In the permission settings of your bucket, set "Block all public access" to OFF. This setting makes sure that Qualtrics can load the picture.
+
 ### R
 
 To run the scripts, R ([The R Project for Statistical Computing](https://www.r-project.org/)) and the [R Studio Editor](https://www.rstudio.com/products/rstudio/download/) is needed. Both are freely available under the links provided. Please use the latest versions if possible.
