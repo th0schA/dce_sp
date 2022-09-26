@@ -4,3 +4,4 @@
 .Ruserdata
 .DS_Store
 aws_function.R
+upload_awss3.sh
