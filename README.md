@@ -7,8 +7,16 @@ The output is a survey like [this](https://ivtethz.fra1.qualtrics.com/jfe/form/S
 ## Content
 
 1. Simple choice design (data)
-2. R Code to display a choice situation in Qualtrics (scripts)
+2. R Code to display a choice situation in Qualtrics in two ways (scripts)
+   1. Create a picture of each choice situation
+      - Upload it to AWS bucket
+      - Show picture on the fly in Qualtrics
+   2. Create a JSON file of each choice situation
+      - Upload it to AWS bucket
+      - Load data with Qualtrics Web Service
+      - Display data in Qualtrics Matrix Table
 3. Qualtrics survey template (survey)
+   - A template to load in Qualtrics
 
 ## Requirements
 
