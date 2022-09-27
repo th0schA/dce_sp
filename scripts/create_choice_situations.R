@@ -24,8 +24,8 @@ Sys.setenv(
 )
 
 # create two folders in bucket on AWS S3 to store png and JSON files
-put_folder(folder = "cards", bucket = "yourbucket")
-put_folder(folder = "jsons", bucket = "yourbucket")
+aws.s3::put_folder(folder = "cards", bucket = "yourbucket")
+aws.s3::put_folder(folder = "jsons", bucket = "yourbucket")
 
 
 # load helper functions ---------------------------------------------------
