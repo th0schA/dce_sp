@@ -111,8 +111,7 @@ randomize_cards <- function(cards, seed = set.seed(1), file = NULL) {
   invisible(cards)
 }
 
-print_card <- function(card, card_name, file, file_aws,
-                       draw, save, upload, bucket) {
+print_card <- function(card, card_name, file, draw, save) {
   
   card <- as.data.frame(card)
   cs <- stringr::str_extract(stringr::str_extract(card_name, "cs_\\d"), "\\d")
@@ -139,23 +138,10 @@ print_card <- function(card, card_name, file, file_aws,
     ggplot2::ggsave(file, c, width = w, height = h)
   }
   
-  if(upload) {
-    tmp <- tempfile(paste0("image"), fileext = ".png")
-    on.exit(unlink(tmp))
-    ggplot2::ggsave(tmp, c, width = w, height = h)
-    put_object(file = tmp,
-               object = file_aws,
-               bucket = bucket,
-               acl = "public-read")
-  }
-  
   invisible(card)
 }
 
-print_cards <- function(cards, verbose = TRUE, draw = F, save = F, upload = F, bucket = NULL) {
-  
-  if(upload == TRUE & is.null(bucket)) stop("If you would like to upload the pictures,
-                                            define 'upload = TRUE' and 'upload = 'yourawsbucket' '")
+print_cards <- function(cards, verbose = TRUE, draw = F, save = F) {
   
   sapply(seq_along(cards), function(i) {
     
@@ -163,9 +149,8 @@ print_cards <- function(cards, verbose = TRUE, draw = F, save = F, upload = F, b
     card <- cards[[i]]
     
     file <- file.path(getwd(),"data/cards", glue::glue("{card_name}.png"))
-    file_aws <- glue::glue("cards/{card_name}.png")
     
-    print_card(card, card_name, file, file_aws, draw, save, upload, bucket)
+    print_card(card, card_name, file, draw, save)
     
     if(verbose) cat(card_name, "\n")
   })
@@ -179,7 +164,6 @@ theme_example <- function(nr_alts, nr_attr) {
   
   # head coloring
   head_colors <- c("#b3b3b3","#b1d0ff","#9ec5ff","#8dbbff","#b1d0ff")
-  #head_colors <- head_colors[1:(nr_alts + 1)]
   
   # core coloring
   core_colours <- matrix("#000000", ncol = nr_alts + 1, nrow = nr_attr)
@@ -248,7 +232,6 @@ generate_jsondata <- function(choice_design) {
   jsondata$block_name <- paste0("block_",jsondata$block)
   return(jsondata)
 }
-
 
 
 

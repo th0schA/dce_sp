@@ -26,7 +26,7 @@ In order for the example to work, an account on [Amazon Simple Storage Service (
 
 1. To use the package, you will also have to enter your credentials into R. Your keypair can be generated on the IAM Management Console under the heading Access Keys. Note that you only have access to your secret key once. After it is generated, you need to save it in a secure location. New keypairs can be generated at any time if yours has been lost, stolen, or forgotten.
 
-2. Create a bucket (any name) and two folders called "cards" and "jsons". These will be used to upload the pictures or JSON files.
+2. Create a bucket (any name). It will be used to upload the pictures or JSON files. Two folders will be created in script "create_choice_situations.R".
 
 3. In the permission settings of your bucket, set "Block all public access" to OFF. This setting makes sure that Qualtrics can load the picture.
 

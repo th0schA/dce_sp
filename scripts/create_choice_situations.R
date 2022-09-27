@@ -16,16 +16,21 @@ lapply(required_packages, require, character.only = TRUE)
 
 # AWS S3 set up
 # replace "your..." with your AWS S3 credentials
+# see https://github.com/cloudyr/aws.s3 for help
 Sys.setenv(
   "AWS_ACCESS_KEY_ID" = "yourkey",
   "AWS_SECRET_ACCESS_KEY" = "yoursecretkey",
   "AWS_DEFAULT_REGION" = "yourregion"
 )
 
+# create two folders in bucket on AWS S3 to store png and JSON files
+put_folder(folder = "cards", bucket = "yourbucket")
+put_folder(folder = "jsons", bucket = "yourbucket")
+
 
 # load helper functions ---------------------------------------------------
 
-# functions to :
+# several functions to:
 # 1. produce pictures
 # 2. produce json files
 source(file.path(getwd(),"scripts","helper_functions.R"))
@@ -41,7 +46,6 @@ sp_design <- readr::read_csv(file = file.path(getwd(),"data","sp_design.csv")) %
   dplyr::rename(cs_design = cs) %>%
   dplyr::arrange(block, cs_design) %>% 
   dplyr::group_by(block) %>%
-  # add the number of the choice situation in each block
   dplyr::mutate(cs = row_number()) %>%
   dplyr::ungroup()
 
@@ -68,14 +72,21 @@ str(sp_design_labelled)
 # 1. generate_cards(): creates a list of dfs, each element is a choice situation
 # 2. randomize_cards(): randomly changes order of alternatives in each choice situation
 #                       and saves a csv file with the order for later rematching
-# 3. print_cards(): applies a theme to each choice situation and draws/saves it to folder and AWS
+# 3. print_cards(): applies a theme to each choice situation and draws/saves it to folder
 #                   can also only print cards for inspection
 # detailed information in script "helper_functions.R"
-
 sp_cards <- sp_design_labelled %>%
   generate_cards() %>%
   randomize_cards(file = "sp_cards_order.csv") %>%
-  print_cards(draw = F, save = T, upload = F, bucket = "yourbucket")
+  print_cards(draw = F, save = T)
+
+# upload png files to AWS
+lapply(dir(file.path(getwd(),"data/cards"), full.names = TRUE, recursive = TRUE), function(filename) {
+  aws.s3::put_object(file = filename,
+                     object = stringr::str_extract(filename, "block_\\d_cs_\\d.png$"),
+                     bucket = "testivt/cards",
+                     acl = "public-read")
+})
 
 
 # create json files for each block ----------------------------------------
@@ -84,8 +95,7 @@ sp_cards <- sp_design_labelled %>%
 # the data for one block and its 4 choice situations and saves each to folder as well as
 # uploads it to AWS
 
-# 1. generate_jsondata(): creates a df with all combinations of alternatives and attributes
-#                         and adds block names
+# 1. generate_jsondata(): creates a df and adds block names
 
 # group output of generate_jsondata() by block name
 sp_design_jsons <- sp_design_labelled %>%
@@ -104,10 +114,13 @@ names(sp_design_jsons) <- sp_design_jsons_groupkeys
 sp_design_jsons %>%
   purrr::walk2(names(.), ~ jsonlite::write_json(.x, file.path(getwd(), "data/jsons", paste0(.y,".json"))))
 
-# TO DO: AWS upload
-
-
-
+# upload json files to AWS
+lapply(dir(file.path(getwd(),"data/jsons"), full.names = TRUE, recursive = TRUE), function(filename) {
+  aws.s3::put_object(file = filename,
+             object = stringr::str_extract(filename, "block_.*.json$"),
+             bucket = "testivt/jsons",
+             acl = "public-read")
+})
 
 
 
