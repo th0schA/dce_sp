@@ -1,6 +1,6 @@
 # Implementing web-based discrete choice experiments with Qualtrics, R and Amazon Web Service (AWS)
 
-This repository contains a step by step guide to implement a survey with a discrete choice experiment (DCE) in Qualtrics. It is part of the paper "Implementing web-based discrete choice experiments in transportation" published in [Transportation Research Procedia](https://authors.elsevier.com/sd/article/S2352-1465(23)01340-6).
+This repository contains a step by step guide to implement a survey with a discrete choice experiment (DCE) in Qualtrics. It is part of the paper "Implementing web-based discrete choice experiments in transportation" published in <a href="https://authors.elsevier.com/sd/article/S2352-1465(23)01340-6" target="_blank">Transportation Research Procedia</a>.
 
 The output is a survey like <a href="https://ivtethz.fra1.qualtrics.com/jfe/form/SV_9ykT8FWUU31yjGu" target="_blank">this</a> one in Qualtrics. Click on the link and fill out the survey to get a first impression.
 
